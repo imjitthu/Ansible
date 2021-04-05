@@ -1,0 +1,28 @@
+- name: Include Common Role for OS Prereqs
+  include_role:
+    name: common
+    tasks_from: os
+
+- name: Install Repo files
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+
+- name: Install Redis
+  yum:
+    name: redis
+    state: present
+    enablerepo: remi
+
+- name: Update Redis configuration file
+  replace:
+    path: /etc/redis.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+
+- name: Start Redis
+  systemd:
+    name: redis
+    state: started
+    enabled: yes
+

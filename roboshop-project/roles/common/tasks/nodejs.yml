@@ -1,0 +1,32 @@
+- name: Setup OS Pre-requisites
+  include_tasks: os.yml
+
+- name: Install NodeJS Packages
+  ansible.builtin.yum:
+    name:
+      - nodejs
+      - make
+      - gcc-c++
+    state: present
+
+- name: Create Application User
+  user:
+    name: roboshop
+
+- name: Include Common Role for Azure DevOps Artifacts
+  include_role:
+    name: common
+    tasks_from: download-from-az-artifacts.yml
+  vars:
+    ARTIFACT_PATH: "/home/roboshop/{{COMPONENT}}"
+    BUSER: "roboshop"
+
+#- name: Download NodeJS dependencies
+#  shell: npm install
+#  args:
+#    chdir: /home/roboshop/{{COMPONENT}}
+#  become_user: roboshop
+
+- name: Setup SystemD Service
+  include_tasks: systemd-setup.yml
+

@@ -1,0 +1,12 @@
+- name: DEMO ON FACTS
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Print the hostname
+      ansible.builtin.debug:
+        msg: "{{ansible_fqdn}}"
+
+# Additional facts can also be added by node, By configuring the facts. BTW this is very very less used option
+# https://serverascode.com/2015/01/27/ansible-custom-facts.html
+
+

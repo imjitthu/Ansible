@@ -1,0 +1,39 @@
+- name: Include Common Role for OS Prereqs
+  include_role:
+    name: common
+    tasks_from: os
+
+- name: COpy Mongo repo file
+  template:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: Install MongoDB
+  yum:
+    name: mongodb-org
+    state: present
+
+- name: Update MongoDB configuration file
+  replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+
+- name: Start MongoDB
+  systemd:
+    name: mongod
+    state: started
+    enabled: yes
+
+- name: Download and Unarchive {{COMPONENT}} on remote machine
+  unarchive:
+    src: "{{ARTIFACT_ZIP_URL}}"
+    dest: /tmp
+    remote_src: yes
+
+- name: Load Schema
+  shell: mongo < /tmp/{{ item }}.js
+  loop:
+    - catalogue
+    - users
+

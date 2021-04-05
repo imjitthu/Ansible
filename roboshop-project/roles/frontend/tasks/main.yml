@@ -1,0 +1,44 @@
+- name: Include Common Role for OS Prereqs
+  include_role:
+    name: common
+    tasks_from: os
+
+- name: Install Nginx
+  yum:
+    name: nginx
+    state: present
+
+- name: Include Common Role for Azure DevOps Artifacts
+  include_role:
+    name: common
+    tasks_from: download-from-az-artifacts.yml
+  vars:
+    ARTIFACT_PATH: "/usr/share/nginx"
+    BUSER: "root"
+
+- name: Rename content directory
+  shell: mv /usr/share/nginx/static /usr/share/nginx/html
+
+- name: Update Nginx Configuration for application
+  template:
+    src: roboshop.conf
+    dest: /etc/nginx/default.d/roboshop.conf
+
+#- name: Update Nginx Configuration
+#  template:
+#    src: nginx.conf
+#    dest: /etc/nginx/nginx.conf
+
+- name: Enable Nginx Service
+  systemd:
+    name: nginx
+    enabled: yes
+    state: stopped
+
+- name: Include Prometheus Role
+  include_role:
+    name: prometheus
+
+- name: Include Filebeat Role
+  include_role:
+    name: filebeat

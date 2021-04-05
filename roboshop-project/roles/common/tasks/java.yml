@@ -1,0 +1,35 @@
+- name: Setup OS Pre-requisites
+  include_tasks: os.yml
+
+- name: Install Maven Packages
+  ansible.builtin.yum:
+    name: maven
+    state: present
+
+- name: Create Application User
+  user:
+    name: roboshop
+
+- name: Include Common Role for Azure DevOps Artifacts
+  include_role:
+    name: common
+    tasks_from: download-from-az-artifacts.yml
+  vars:
+    ARTIFACT_PATH: "/home/roboshop/{{COMPONENT}}"
+    BUSER: "roboshop"
+
+#- name: Compile & Build Package
+#  shell:
+#    chdir: /home/roboshop/{{COMPONENT}}
+#    cmd: mvn clean package
+#  become_user: roboshop
+#
+#- name: Copy {{ COMPONENT }} Jar file
+#  copy:
+#    src: /home/roboshop/shipping/target/shipping-1.0.jar
+#    dest: /home/roboshop/shipping/shipping.jar
+#    remote_src: yes
+
+- name: Setup SystemD Service
+  include_tasks: systemd-setup.yml
+

@@ -1,0 +1,8 @@
+[Unit]
+Description = Node_exporter Service
+[Service]
+ExecStart={{NE_DIR}}/node_exporter --collector.systemd
+SyslogIdentifier=node_exporter
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,49 @@
+- name: Delete {{COMPONENT}} Directory
+  file:
+    path: "{{ARTIFACT_PATH}}"
+    state: absent
+
+- name: Create {{COMPONENT}} Directory
+  file:
+    path: "{{ARTIFACT_PATH}}"
+    state: directory
+  become_user: "{{BUSER}}"
+
+## Check if AZ CLI is not there then follow the remaining steps
+- name: Check az cli
+  shell: which az
+  register: out
+  ignore_errors: yes
+
+- name: Install AZ CLI
+  when: out.rc != 0
+  block:
+    - name: Copy Azure Repo file
+      copy:
+        src: az.repo
+        dest: /etc/yum.repos.d/az.repo
+
+    - name: Install Azure CLI
+      yum:
+        name: [ "azure-cli", "libicu" ]
+        state: present
+
+    - name: Install Azure DevOps Extention
+      shell: az extension add --name azure-devops
+
+    - name: Upgrade pip
+      shell: pip3 install pip --upgrade
+
+    - name: Install Keyring Pip Module
+      shell: /usr/bin/python3 -m pip install keyring~=17.1.1 --target {{ansible_env.HOME}}/.azure/cliextensions/azure-devops -vv --disable-pip-version-check --no-cache-dir
+
+
+- name: Configure PAT in AZ CLI
+  shell: echo {{PAT}} | az devops login
+
+- name: Download Artifacts
+  shell: az artifacts universal download --organization https://dev.azure.com/DevOps-Batches/ --project="DevOps53" --scope project --feed devops53 --name {{COMPONENT}} --version {{APP_ARTIFACT_VERSION}} --path .
+  args:
+    chdir: "{{ARTIFACT_PATH}}"
+
+
