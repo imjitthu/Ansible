@@ -1,0 +1,20 @@
+- name: Download Node_exporter
+  unarchive:
+    src: "{{NodeExporter}}"
+    dest: /opt
+    remote_src: yes
+
+- name: Making node_exporter file    
+  shell: cd /opt; mv node*.* node_exporter    
+
+- name: Copy SystemD / service file
+  template:
+    src: node_exporter.service
+    dest: /etc/systemd/system
+
+- name: Start Node Exporter
+  systemd:
+    name: node_exporter
+    daemon_reload: yes
+    state: started
+    enabled: yes

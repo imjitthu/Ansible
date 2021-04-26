@@ -1,0 +1,94 @@
+- name: Include Common Role for OS Prereqs
+  include_role:
+    name: common
+    tasks_from: os
+
+- name: Include Azure CLI roles
+  include_role:
+    name: common
+    tasks_from: az_cli
+
+- name: Include node exporter role
+  include_role:
+    name: common
+    tasks_from: node_exporter
+
+- name: Include rsyslog role
+  include_role:
+    name: common
+    tasks_from: rsyslog
+
+- name: Download and Install Elastic Public Signing Key
+  shell: sudo rpm --import https://packages.elastic.co/GPG-KEY-{{COMPONENT}}
+
+- name: Adding {{COMPONENT}}.repo file
+  copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+
+- name: Installing elastic search
+  yum: 
+   name: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.12.0-x86_64.rpm
+   state: present
+
+# sudo dnf install --enablerepo={{COMPONENT}} {{COMPONENT}} (Use dnf on Fedora and other newer Red Hat distributions)
+# sudo zypper modifyrepo --enable {{COMPONENT}} (Use zypper on OpenSUSE based distributions)
+# sudo zypper install {{COMPONENT}} 
+# sudo zypper modifyrepo --disable {{COMPONENT}}
+
+- name: Starting elasticsearch services
+  systemd:
+    daemon-reload: yes
+    enabled: yes
+    state: restarted
+    name: elasticsearch
+
+- name: Adding logstash.repo file
+  copy:
+    src: logstash.repo
+    dest: /etc/yum.repos.d/logstash.repo
+
+- name: installing logstash 
+  yum:
+    name: 
+      - logstash
+    state: present
+
+- name: Adding Systemd file
+  copy:
+    src: logstash.service
+    dest: /etc/systemd/system/logstash.service    
+
+- name: Adding /etc/logstash/conf.d/roboshop.conf file
+  copy:
+    src: roboshop.conf
+    dest: /etc/logstash/conf.d/roboshop.conf
+
+- name: Starting logstash services.
+  systemd:
+    daemon-reload: yes
+    enabled: yes
+    state: restarted
+    name: logstash
+
+- name: Adding kibana.repo file
+  copy:
+    src: kibana.repo
+    dest: /etc/yum.repos.d/kibana.repo
+
+- name: installing kibana
+  yum:
+    name: kibana
+    state: present
+
+- name: Starting logstash services.
+  systemd:
+    daemon-reload: yes
+    enabled: yes
+    state: restarted
+    name: kibana
+
+- name: Include filebeat roles
+  include_role:
+    name: common
+    tasks_from: filebeat

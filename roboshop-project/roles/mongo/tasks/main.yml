@@ -3,17 +3,37 @@
     name: common
     tasks_from: os
 
-- name: COpy Mongo repo file
+- name: Include filebeat roles
+  include_role:
+    name: common
+    tasks_from: filebeat
+
+- name: Include Azure CLI roles
+  include_role:
+    name: common
+    tasks_from: az_cli
+
+- name: Include node exporter role
+  include_role:
+    name: common
+    tasks_from: node_exporter
+
+- name: Include rsyslog role
+  include_role:
+    name: common
+    tasks_from: rsyslog
+
+- name: Set up {{COMPONENT}} repos
   template:
     src: mongo.repo
     dest: /etc/yum.repos.d/mongo.repo
 
-- name: Install MongoDB
+- name: Install {{COMPONENT}}
   yum:
     name: mongodb-org
     state: present
 
-- name: Update MongoDB configuration file
+- name: Update {{COMPONENT}} configuration file
   replace:
     path: /etc/mongod.conf
     regexp: '127.0.0.1'
@@ -21,19 +41,28 @@
 
 - name: Start MongoDB
   systemd:
+    daemon_reload: yes
     name: mongod
     state: started
     enabled: yes
 
-- name: Download and Unarchive {{COMPONENT}} on remote machine
-  unarchive:
-    src: "{{ARTIFACT_ZIP_URL}}"
+- name: Copy catalogue.js {{COMPONENT}}
+  copy:
+    src: catalogue.js
     dest: /tmp
-    remote_src: yes
 
-- name: Load Schema
+- name: Copy users.js {{COMPONENT}}
+  copy:
+    src: users.js
+    dest: /tmp
+
+- name: Load {{COMPONENT}} schema
   shell: mongo < /tmp/{{ item }}.js
   loop:
     - catalogue
     - users
 
+- name: Restart {{COMPONENT}} Serive
+  systemd:
+    name: mongod
+    state: restarted

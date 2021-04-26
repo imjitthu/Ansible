@@ -1,0 +1,25 @@
+pipeline {
+  agent any
+
+  stages {
+
+    stage('CI-Job') {
+      steps {
+        build 'CI-Jobs/Frontend'
+      }
+    }
+
+    stage('AMI Make') {
+      steps {
+        build job: 'CD-Jobs/AMI', parameters: [string(name: 'component', value: 'frontend')]
+      }
+    }
+
+    stage('CD-Job') {
+      steps {
+        build 'CD-Jobs/Frontend'
+      }
+    }
+
+  }
+}

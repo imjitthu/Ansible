@@ -1,0 +1,23 @@
+- name: Delete {{COMPONENT}} Directory
+  file:
+    path: "{{ARTIFACT_PATH}}"
+    state: absent
+
+- name: Create {{COMPONENT}} Directory
+  file:
+    path: "{{ARTIFACT_PATH}}"
+    state: directory
+  become_user: "{{BUSER}}"
+
+- name: Upgrade pip
+  shell: pip3 install pip --upgrade
+
+- name: Install Keyring PIP Module
+  shell: /usr/bin/python3 -m pip install keyring~=17.1.1 --target {{ansible_env.HOME}}/.azure/cliextensions/azure-devops -vv --disable-pip-version-check --no-cache-dir
+
+- name: Download Artifacts
+  shell: az artifacts universal download --organization https://dev.azure.com/DevOps-Batches/ --project="DevOps53" --scope project --feed devops53 --name {{COMPONENT}} --version {{APP_ARTIFACT_VERSION}} --path .
+  args:
+    chdir: "{{ARTIFACT_PATH}}"
+
+

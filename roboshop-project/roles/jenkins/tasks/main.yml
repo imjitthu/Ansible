@@ -1,0 +1,30 @@
+- name: download JenKins repo
+  unarchive: 
+   src: "{{URL}}"
+   dest: /etc/yum.repos.d/jenkins.repo
+  remote_src: yes
+
+- name: import JenKins RPM Key
+  shell: sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+# - name: Import a key from a url
+#   ansible.builtin.rpm_key:
+#     state: present
+#     key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+- name: Installing JenKins with JAVA support
+  yum:
+    name:
+      - jenkins
+      - java
+    state: present
+
+- name: Configuring JenKins Services
+  systemd:
+    name: jenkins
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+
+#Get JenKins Default Password
+#cat /var/lib/jenkins/secrets/initialAdminPassword

@@ -1,0 +1,35 @@
+- name: Chceck Az CLI installed or not?
+  shell: which az
+  register: out
+  ignore_errors: yes
+
+
+## Check if AZ CLI is not there then follow the remaining steps
+
+- name: Install Az CLI
+  when: out.rc != 0
+  block:
+   - name: Import MicroSoft Repository Key
+     shell: sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc 
+
+   - name: Copy azure repo file
+     template:
+      src: az.repo
+      dest: /etc/yum.repos.d/az.repo
+
+   - name: Install Azure CLI
+     yum:
+      name: [ "azure-cli", "libicu" ]
+      state: present
+
+   - name: Install Azure DevOps Extention
+     shell: az extension add --name azure-devops
+
+   - name: Configure PAT in AZ CLI
+     shell: |
+      echo "{{PAT}}" | az devops login
+     ignore_errors: yes
+
+    
+
+

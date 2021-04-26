@@ -1,12 +1,59 @@
-- name: Include Common Role
+- name: Include Common Role for OS Prereqs
+  include_role:
+    name: common
+    tasks_from: os
+
+- name: Include filebeat roles
+  include_role:
+    name: common
+    tasks_from: filebeat
+
+- name: Include Azure CLI roles
+  include_role:
+    name: common
+    tasks_from: az_cli
+
+- name: Include node exporter role
+  include_role:
+    name: common
+    tasks_from: node_exporter
+
+- name: Include rsyslog role
+  include_role:
+    name: common
+    tasks_from: rsyslog
+
+- name: Install NodeJS tools
   include_role:
     name: common
     tasks_from: nodejs
 
-- name: Include Prometheus Role
-  include_role:
-    name: prometheus
+- name: Add App user
+  user:
+    name: roboshop
+    comment: RoboShop user
 
-- name: Include Filebeat Role
+- name: Make App Directory
+  shell: mkdir -p /home/roboshop/catalogue
+
+- name: Download Component files
+  copy: 
+    src: files/
+    dest: /home/roboshop/catalogue
+
+- name: Installing NodeJS dependencies
   include_role:
-    name: filebeat
+    name: common
+    tasks_from: npm
+
+- name: Add {{COMPONENT}} service file
+  template:
+    src: catalogue.service
+    dest: /etc/systemd/system/catalogue.service
+
+- name: Enamble/Start {{COMPONENT}} services
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    name: catalogue
+    state: restarted 

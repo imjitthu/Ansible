@@ -1,0 +1,54 @@
+pipeline {
+  agent any
+
+  stages {
+
+    stage('Prepare Artifacts') {
+      when {
+        buildingTag()
+      }
+      steps {
+        sh '''
+          mkdir -p publish
+          cp -r static *.conf publish
+        '''
+      }
+    }
+
+    stage('Sonar Scan') {
+      when {
+        buildingTag()
+      }
+      steps {
+        sh '''
+        sonar-scanner -Dsonar.projectKey=frontend -Dsonar.sources=.  -Dsonar.host.url=http://3.93.143.148:9000 -Dsonar.login=ea90a63fa0f9c6469151b73b9a7c0ff2571cb986 | tee sonar.out
+        ID=$(cat sonar.out | grep "api/ce" | awk -F = '{print $NF}')
+        STATUS=$(curl -u admin:admin123  "http://3.93.143.148:9000/api/qualitygates/project_status?analysesId=${ID}&projectKey=frontend" | jq  '.projectStatus.status' | xargs) 
+        if [ ${STATUS} != "OK" ]; then 
+          false 
+        fi
+        '''
+      }
+    }
+
+
+    stage('Lint Check') {
+      steps {
+        sh '''
+          jslint '**/*.js'
+        '''
+      }
+    }
+
+
+    stage('Publish Artifacts') {
+      steps {
+        sh '''
+          cd publish
+          az artifacts universal publish --organization https://dev.azure.com/DevOps-Batches/ --project="DevOps52" --scope project --feed devopsb52 --name frontend --description "Frontend" --version 0.0.${BUILD_NUMBER} --path .
+        '''
+      }
+    }
+
+  }
+}

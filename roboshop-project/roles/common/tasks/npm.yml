@@ -1,0 +1,11 @@
+- name: Installing NodeJS dependencies
+  npm: 
+    path: /home/roboshop/{{COMPONENT}}
+    state: latest
+
+# - name: installing NojdeJS dependencies
+#   shell: install npm
+#   args: 
+#    path: /home/roboshop/{{COMPONENT}}
+
+# USER, CART, Catalogue required NodeJS modules to be installed

@@ -1,0 +1,11 @@
+- name: Setup Rsyslog
+  copy:
+    src: roboshop.conf
+    dest: /etc/rsyslog.d/roboshop.conf
+
+# Rsyslog is an Open Source logging program, which is the most popular logging mechanism in a huge number of Linux distributions. It's also the default logging service in CentOS 7 or RHEL 7. Rsyslog daemon in CentOS can be configured to run as a server in order collect log messages from multiple network devices.
+
+- name: Restart Rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted

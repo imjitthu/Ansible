@@ -1,12 +1,67 @@
-- name: Include Common Role for Java
+- name: Include Common Role for OS Prereqs
   include_role:
     name: common
-    tasks_from: java
+    tasks_from: os
 
-- name: Include Prometheus Role
+- name: Include filebeat roles
   include_role:
-    name: prometheus
+    name: common
+    tasks_from: filebeat
 
-- name: Include Filebeat Role
+- name: Include Azure CLI roles
   include_role:
-    name: filebeat
+    name: common
+    tasks_from: az_cli
+
+- name: Include node exporter role
+  include_role:
+    name: common
+    tasks_from: node_exporter
+
+- name: Include rsyslog role
+  include_role:
+    name: common
+    tasks_from: rsyslog
+
+- name: Install Maven and JAVA for Shipping APP
+  yum:
+    name: 
+      - java
+      - maven
+    state: present
+
+- name: Create Application User
+  user:
+    name: roboshop
+    comment: Robo Shop
+
+- name: Make {{COMPONENT}} Folder
+  file: 
+    path: /home/roboshop/{{COMPONENT}}
+    state: directory
+
+- name: Download and Extract Artifacts
+  copy:
+   src: files/
+   dest: /home/roboshop/shipping
+  
+- name: Maven Clean Package
+  shell: cd /home/roboshop/{{COMPONENT}} ; mvn clean package 
+
+- name: Adding Shipping.jar file
+  copy:
+    src: /home/roboshop/{{COMPONENT}}/target/shipping-1.0.jar
+    dest: /home/roboshop/{{COMPONENT}}/shipping.jar
+    remote_src: yes
+
+- name: Add {{COMPONENT}} service file
+  template:
+   src: shipping.service
+   dest: /etc/systemd/system/shipping.service
+   
+- name: Starting catalogue services
+  systemd: 
+   daemon_reload: yes
+   enabled: yes
+   state: restarted
+   name: "{{COMPONENT}}"
