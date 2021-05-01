@@ -3,25 +3,25 @@
     name: common
     tasks_from: os
 
-- name: Include filebeat roles
-  include_role:
-    name: common
-    tasks_from: filebeat
+# - name: Include filebeat roles
+#   include_role:
+#     name: common
+#     tasks_from: filebeat
 
 #- name: Include Azure CLI roles
 #  include_role:
 #    name: common
 #    tasks_from: az_cli
 
-- name: Include node exporter role
-  include_role:
-    name: common
-    tasks_from: node_exporter
+# - name: Include node exporter role
+#   include_role:
+#     name: common
+#     tasks_from: node_exporter
 
-- name: Include rsyslog role
-  include_role:
-    name: common
-    tasks_from: rsyslog
+# - name: Include rsyslog role
+#   include_role:
+#     name: common
+#     tasks_from: rsyslog
 
 - name: Install Maven and JAVA for Shipping APP
   yum:

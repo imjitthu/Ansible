@@ -2,7 +2,7 @@
   unarchive:
     src: "{{NodeExporter}}"
     dest: /opt
-    remote_src: yes
+  remote_src: yes
 
 - name: Making node_exporter file    
   shell: | 
