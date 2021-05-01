@@ -19,7 +19,7 @@ var redisConnected = false;
 
 var redisHost = process.env.REDIS_HOST || 'redis'
 var catalogueHost = process.env.CATALOGUE_HOST || 'catalogue'
-var cataloguePort = process.env.CATALOGUE_PORT || '8080'
+var cataloguePort = process.env.CATALOGUE_PORT || '80'
 
 
 const logger = pino({
@@ -379,7 +379,7 @@ redisClient.on('ready', (r) => {
 });
 
 // fire it up!
-const port = process.env.CART_SERVER_PORT || '8080';
+const port = process.env.CART_SERVER_PORT || '80';
 app.listen(port, () => {
     logger.info('Started on port', port);
 });
