@@ -8,8 +8,9 @@
 var autoComplete = (function(){
     // "use strict";
     function autoComplete(options){
-        if (!document.querySelector) return;
-
+        if (!document.querySelector) {
+            return;
+        }
         // helpers
         function hasClass(el, className){ return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className); }
 

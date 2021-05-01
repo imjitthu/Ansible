@@ -1,16 +1,5 @@
-FROM nginx:1.19
-
-EXPOSE 8080
-
-ENV CATALOGUE_HOST=catalogue \
-    USER_HOST=user \
-    CART_HOST=cart \
-    SHIPPING_HOST=shipping \
-    PAYMENT_HOST=payment \
-    RATINGS_HOST=ratings
-
-COPY entrypoint.sh /root/
-ENTRYPOINT ["/root/entrypoint.sh"]
-
-COPY default.conf.template /etc/nginx/conf.d/default.conf.template
-COPY static /usr/share/nginx/html
+FROM      nginx
+RUN       rm -rf /usr/share/nginx/html /etc/nginx/nginx.conf
+COPY      static /usr/share/nginx/html
+COPY      server.conf /etc/nginx/conf.d/default.conf
+COPY      nginx.conf /etc/nginx/nginx.conf
