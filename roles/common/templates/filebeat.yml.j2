@@ -37,7 +37,7 @@ setup.template.settings:
   index.number_of_shards: 1
 {% if COMPONENT == "frontend" or COMPONENT == "shipping" or COMPONENT == "payment"  %}
 output.logstash:
-  hosts: ["{{LOGSTASH_IP}}:5044"]
+  hosts: ["{{L_IP}}:5044"]
 {%endif%}
 {% if COMPONENT == "catalogue" or COMPONENT == "cart" or COMPONENT == "user" %}
 setup.template.name: "{{COMPONENT}}"
@@ -45,7 +45,7 @@ setup.template.pattern: "{{COMPONENT}}-*"
 setup.template.enabled: false
 setup.ilm.enabled: false
 output.elasticsearch:
-  hosts: ["{{ELASTICSEARCH_IP}}:9200"]
+  hosts: ["{{E_IP}}:9200"]
   index: "{{COMPONENT}}-%{+yyyy.MM.dd}"
 {%endif%}
 # ================================= Processors =================================
