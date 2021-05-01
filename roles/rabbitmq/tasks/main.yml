@@ -3,11 +3,6 @@
     name: common
     tasks_from: os
 
-- name: Include rsyslog role
-  include_role:
-    name: common
-    tasks_from: rsyslog
-
 - name: Install Erlang is a dependency which is needed for RabbitMQ
   yum: 
     name: "{{Erlang}}"

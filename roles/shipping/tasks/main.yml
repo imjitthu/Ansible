@@ -39,7 +39,7 @@
    src: shipping.service
    dest: /etc/systemd/system/shipping.service
    
-- name: Starting catalogue services
+- name: Starting {{COMPONENT}} services
   systemd: 
    daemon_reload: yes
    enabled: yes
