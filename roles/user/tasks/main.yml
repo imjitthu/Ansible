@@ -23,10 +23,15 @@
 #     name: common
 #     tasks_from: rsyslog
 
-- name: Install NodeJs
-  include_role:
-    name: common
-    tasks_from: nodejs
+- name: Download and Extract Artifacts
+  copy:
+    src: files/
+    dest: /home/roboshop/{{COMPONENT}}
+
+- name: Installing NodeJS dependencies
+  npm:
+    path: /home/roboshop/{{COMPONENT}}
+    state: latest
 
 - name: Add App user
   user:

@@ -23,10 +23,13 @@
 #     name: common
 #     tasks_from: rsyslog
 
-- name: Install NodeJS tools
-  include_role:
-    name: common
-    tasks_from: nodejs
+- name: Install NodeJS
+  yum:
+    name:
+      - nodejs
+      - make
+      - gcc-c++
+    state: present
 
 - name: Add App user
   user:
@@ -42,9 +45,9 @@
     dest: /home/roboshop/catalogue
 
 - name: Installing NodeJS dependencies
-  include_role:
-    name: common
-    tasks_from: npm
+  npm:
+    path: /home/roboshop/{{COMPONENT}}
+    state: latest
 
 - name: Add {{COMPONENT}} service file
   template:
