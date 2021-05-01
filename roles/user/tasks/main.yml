@@ -29,9 +29,14 @@
     dest: /home/roboshop/{{COMPONENT}}
 
 - name: Installing NodeJS dependencies
-  npm:
-    path: /home/roboshop/{{COMPONENT}}
-    state: latest
+  shell: |
+    cd /home/roboshop/{{COMPONENT}}
+    npm install
+
+# - name: Installing NodeJS dependencies
+#   npm:
+#     path: /home/roboshop/{{COMPONENT}}
+#     state: latest
 
 - name: Add App user
   user:
