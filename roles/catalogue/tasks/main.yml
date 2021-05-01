@@ -44,10 +44,16 @@
     src: files/
     dest: /home/roboshop/catalogue
 
-- name: Installing NodeJS dependencies
-  shell: |
-    cd /home/roboshop/{{COMPONENT}}
-    npm install
+- name: Download NodeJS dependencies
+  shell: npm install
+  args:
+    chdir: /home/roboshop/{{COMPONENT}}
+  become_user: roboshop
+
+# - name: Installing NodeJS dependencies
+#   shell: |
+#     cd /home/roboshop/{{COMPONENT}}
+#     npm install
 
 # - name: Installing NodeJS dependencies
 #   npm:
