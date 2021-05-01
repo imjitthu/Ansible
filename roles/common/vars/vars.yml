@@ -1,5 +1,5 @@
 DOMAIN: jithendar.com
 ENV: dev
 PAT: ewyttvagpvt5q23uhwztn2uuaeutczrsc77cqukbdvtma6lacrua
-E_IP: elasticsearch.jithendar.com
-L_IP: logstash.jithendar.com
+EIP: elasticsearch.jithendar.com
+LIP: logstash.jithendar.com
