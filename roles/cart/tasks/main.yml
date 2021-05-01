@@ -29,6 +29,7 @@
       - nodejs
       - make
       - gcc-c++
+      - npm
     state: present
 
 - name: Create Application User

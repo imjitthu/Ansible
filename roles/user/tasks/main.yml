@@ -28,6 +28,11 @@
     src: files/
     dest: /home/roboshop/{{COMPONENT}}
 
+- name: Installing NodeJs Package Manager
+  yum:
+    name: npm
+    state: present
+
 - name: Download NodeJS dependencies
   shell: npm install
   args:
