@@ -44,10 +44,10 @@
     src: roboshop.conf
     dest: /etc/nginx/default.d/roboshop.conf
 
-# - name: Update Nginx Configuration
-#   template:
-#    src: nginx.conf
-#    dest: /etc/nginx/nginx.conf
+- name: Update Nginx Configuration
+  template:
+   src: nginx.conf
+   dest: /etc/nginx/nginx.conf
 
 - name: Starting nginx services
   systemd: 
