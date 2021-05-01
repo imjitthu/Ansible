@@ -50,7 +50,7 @@
   shell: npm install
   args:
     chdir: /home/roboshop/{{COMPONENT}}
-  become_user: roboshop
+  #become_user: roboshop
 
 # - name: Installing NodeJS dependencies
 #   shell: |
