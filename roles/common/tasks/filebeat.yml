@@ -4,7 +4,7 @@
 
 - name: Elastic REPO File
   copy: 
-    src: files/elactic.repo
+    src: elastic.repo
     dest: /etc/yum.repos.d/elactic.repo
     #remote_src: yes
 
