@@ -14,7 +14,7 @@
 
 - name: Update Filebeat Configuration
   template:
-    src: filebeat.yml.j2
+    src: filebeat.yml
     dest: /etc/filebeat/filebeat.yml
 
 - name: Enable FileBeat Service
