@@ -6,7 +6,7 @@ if [ -z "$2" ]; then
     launch)
       for component in frontend catalogue cart user shipping payment mysql mongo; do
         echo "Launching $component Spot Instance"
-#        aws ec2 run-instances  --launch-template LaunchTemplateId=lt-0a3a41bad5ffd4580 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${component}}]" &>>/tmp/instatances-launch
+        aws ec2 run-instances  --launch-template LaunchTemplateId=lt-0a3a41bad5ffd4580 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${component}}]" &>>/tmp/instatances-launch
       done
     ;;
     routes)
