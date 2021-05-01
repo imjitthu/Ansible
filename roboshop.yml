@@ -63,20 +63,20 @@
         - frontend
 
 
-#    - name: Load Redis Role
-#      import_role:
-#        name: redis
-#      when: component == "redis"
-#      tags:
-#        - redis
+    - name: Load Redis Role
+      import_role:
+       name: redis
+      when: component == "redis"
+      tags:
+       - redis
 
 
 
-#    - name: Load RabbitMQ Role
-#      import_role:
-#        name: rabbitmq
-#      when: component == "rabbitmq"
-#      tags:
-#        - rabbitmq
+    - name: Load RabbitMQ Role
+      import_role:
+       name: rabbitmq
+      when: component == "rabbitmq"
+      tags:
+       - rabbitmq
 
 
