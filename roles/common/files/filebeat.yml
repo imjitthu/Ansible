@@ -1,0 +1,55 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+{% if COMPONENT == "frontend" %}
+    - /var/log/nginx/access.log
+  fields:
+    app: {{COMPONENT}}
+{% elif COMPONENT == "catalogue" or COMPONENT == "cart" or COMPONENT == "user" %}
+    - /var/log/{{COMPONENT}}.log
+  fields:
+    app: {{COMPONENT}}
+  json.keys_under_root: true
+  json.message_key: msg
+{% elif COMPONENT == "shipping" %}
+    - /var/log/shipping.log
+  fields:
+    app: {{COMPONENT}}
+  multiline.pattern: "^[0-9][0-9][0-9][0-9]"
+  multiline.negate: true
+  multiline.match: after
+{% elif COMPONENT == "payment" %}
+    - /var/log/payment.log
+  fields:
+    app: {{COMPONENT}}
+{%endif%}
+
+# ============================== Filebeat modules ==============================
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+  # Set to true to enable config reloading
+  reload.enabled: false
+# ======================= Elasticsearch template setting =======================
+
+setup.template.settings:
+  index.number_of_shards: 1
+{% if COMPONENT == "frontend" or COMPONENT == "shipping" or COMPONENT == "payment"  %}
+output.logstash:
+  hosts: ["{{LIPADDRESS}}:5044"]
+{%endif%}
+{% if COMPONENT == "catalogue" or COMPONENT == "cart" or COMPONENT == "user" %}
+setup.template.name: "{{COMPONENT}}"
+setup.template.pattern: "{{COMPONENT}}-*"
+setup.template.enabled: false
+setup.ilm.enabled: false
+output.elasticsearch:
+  hosts: ["{{EIPADDRESS}}:9200"]
+  index: "{{COMPONENT}}-%{+yyyy.MM.dd}"
+{%endif%}
+# ================================= Processors =================================
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~

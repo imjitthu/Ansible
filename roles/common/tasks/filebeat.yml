@@ -13,7 +13,7 @@
     state: present
 
 - name: Update Filebeat Configuration
-  template:
+  copy:
     src: filebeat.yml
     dest: /etc/filebeat/filebeat.yml
 
