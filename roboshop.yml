@@ -5,6 +5,21 @@
   become: yes
   # Become is nothing but a sudo in CLI, Also this become can be used in task level also
   tasks:
+
+    - name: Load MongoDB Role
+      import_role:
+        name: mongo
+      when: component == "mongo"
+      tags:
+        - mongo
+    
+    - name: Load MySQL Role
+      import_role:
+        name: mysql
+      when: component == "mysql"
+      tags:
+        - mysql
+
     - name: Load Cart Role
       import_role:
         name: cart
@@ -40,12 +55,13 @@
       tags:
         - payment
 
-    - name: Load MongoDB Role
+    - name: Load Frontend Role
       import_role:
-        name: mongo
-      when: component == "mongo"
+        name: frontend
+      when: component == "frontend"
       tags:
-        - mongo
+        - frontend
+
 
 #    - name: Load Redis Role
 #      import_role:
@@ -54,12 +70,7 @@
 #      tags:
 #        - redis
 
-    - name: Load MySQL Role
-      import_role:
-        name: mysql
-      when: component == "mysql"
-      tags:
-        - mysql
+
 
 #    - name: Load RabbitMQ Role
 #      import_role:
@@ -68,9 +79,4 @@
 #      tags:
 #        - rabbitmq
 
-    - name: Load Frontend Role
-      import_role:
-        name: frontend
-      when: component == "frontend"
-      tags:
-        - frontend
+
