@@ -1,0 +1,76 @@
+- name: Import OS default roles
+  include_role:
+    name: common
+    tasks_from: os
+
+- name: Downloading prometheus
+  get_url:
+    url: "{{PrometheusPackage}}"
+    dest: /tmp/prometheus.tar.gz
+
+- name: create /etc/prometheus directories
+  file:
+    path: /etc/prometheus
+    state: directory
+
+- name: create /var/lib/prometheus directories
+  file:
+    path: /var/lib/prometheus
+    state: directory
+
+- name: installing prometheus
+  shell: |
+    cd /tmp
+    tar xvf prometheus*.tar.gz
+    cd pr*/
+    cp promtool /bin
+    cp prometheus /bin
+    cp -r consoles/ console_libraries/ /etc/prometheus
+    cd /tmp
+    rm -rvf *
+
+- name: Adding prometheus conf file
+  copy:
+    src: prometheus.yml
+    dest: /etc/prometheus
+    #remote_src: yes
+
+- name: Adding prometheus service file
+  copy:
+    src: prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+
+- name: Configure prometheus services
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+    name: prometheus
+
+- name: adding YUM repo for grafana
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/grafana.repo
+
+- name: installing grafana
+  yum:
+    name: grafana
+    state: present
+
+- name: Configure grafana services
+  systemd:
+    daemon_reload: yes
+    enabled: yes
+    state: restarted
+    name: grafana-server
+
+
+# prometheus port 9090
+# node_exporter port 9100
+# grafana port 3000
+# grafana: http://Your-Server-IP or HostName:3000/
+# prometheus: http://Your-Server-IP or HostName:9090/
+# node_exporter: http://IP-Address:9100/metrics/
+# Environment="GOMAXPROCS=1
+# (node_memory_memtotal_bytes - node_memory_free_bytes) / node_memory_memtotal_bytes * 100 for used memory
+# node_systemd_unit_state{name="name.service", state="active"} for get the application running status

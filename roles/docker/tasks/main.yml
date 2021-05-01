@@ -1,0 +1,11 @@
+- name: Install docker root level
+  shell:
+    curl -s https://get.docker.com | bash
+    systemctl daemon-reload
+    systemctl enable docker
+    systemctl restart docker
+
+
+
+- name: Install docker rootless
+  shell: curl -s https://get.docker.com/rootless | bash
