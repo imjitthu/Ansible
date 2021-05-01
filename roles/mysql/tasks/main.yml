@@ -8,10 +8,10 @@
     name: common
     tasks_from: filebeat
 
-- name: Include Azure CLI roles
-  include_role:
-    name: common
-    tasks_from: az_cli
+#- name: Include Azure CLI roles
+#  include_role:
+#    name: common
+#    tasks_from: az_cli
 
 - name: Include node exporter role
   include_role:
