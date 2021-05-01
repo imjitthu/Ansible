@@ -68,11 +68,6 @@
     src: user.service
     dest: /etc/systemd/system/user.service
 
-- name: Installing NPM dependencies
-  include_role:
-    name: common
-    tasks_from: npm
-
 - name: Enamble/Start {{COMPONENT}} services
   systemd:
     daemon_reload: yes
