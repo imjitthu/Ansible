@@ -55,22 +55,12 @@
       tags:
         - payment
 
-    - name: Load Frontend Role
-      import_role:
-        name: frontend
-      when: component == "frontend"
-      tags:
-        - frontend
-
-
     - name: Load Redis Role
       import_role:
        name: redis
       when: component == "redis"
       tags:
        - redis
-
-
 
     - name: Load RabbitMQ Role
       import_role:
@@ -79,4 +69,9 @@
       tags:
        - rabbitmq
 
-
+    - name: Load Frontend Role
+      import_role:
+        name: frontend
+      when: component == "frontend"
+      tags:
+        - frontend
