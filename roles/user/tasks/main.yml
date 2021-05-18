@@ -3,6 +3,11 @@
     name: common
     tasks_from: os
 
+- name: User App user
+  user:
+    name: roboshop
+    comment: RoboShop user
+
 - name: Download and Extract Artifacts
   copy:
     src: files/
@@ -27,21 +32,6 @@
 #   npm:
 #     path: /home/roboshop/{{COMPONENT}}
 #     state: latest
-
-- name: Add App user
-  user:
-    name: roboshop
-    comment: RoboShop user
-
-- name: Make App Directory
-  file:
-    path: /home/roboshop/user
-    state: directory
-
-- name: Copy Component files to App Directory
-  copy: 
-    src: files/
-    dest: /home/roboshop/user
 
 - name: Add {{COMPONENT}} service file
   template:
