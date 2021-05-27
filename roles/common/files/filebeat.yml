@@ -2,7 +2,7 @@ filebeat.inputs:
 - type: log
   enabled: true
   paths:
-{% if COMPONENT == "frontend" %}
+    - {% if COMPONENT == "frontend" %}
     - /var/log/nginx/access.log
   fields:
     app: {{COMPONENT}}
@@ -12,14 +12,14 @@ filebeat.inputs:
     app: {{COMPONENT}}
   json.keys_under_root: true
   json.message_key: msg
-{% elif COMPONENT == "shipping" %}
+    - {% elif COMPONENT == "shipping" %}
     - /var/log/shipping.log
   fields:
     app: {{COMPONENT}}
   multiline.pattern: "^[0-9][0-9][0-9][0-9]"
   multiline.negate: true
   multiline.match: after
-{% elif COMPONENT == "payment" %}
+    - {% elif COMPONENT == "payment" %}
     - /var/log/payment.log
   fields:
     app: {{COMPONENT}}
