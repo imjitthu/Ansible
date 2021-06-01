@@ -21,7 +21,7 @@ pipeline {
         }
         stage ('Run Palybook') {
             steps {
-                ansible-palybook -i /tmp/inv roboshop.yml 
+                ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml'
             }
         }
     }
