@@ -52,6 +52,7 @@ pipeline {
               }
             }
             stage ('Installing Roboshop Components') {
+                when { expression {params.Ansible == "Invoke_playbook" } }
                 parallel {
                 stage ('Installing Cart Service') {
                     steps {
@@ -81,6 +82,7 @@ pipeline {
                     }
                 }
             stage ('Installing Web Components') {
+                when { expression {params.Ansible == "Invoke_playbook" } }
                 steps {
                     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
                 }
