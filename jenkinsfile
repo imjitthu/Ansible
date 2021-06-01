@@ -3,7 +3,7 @@ pipeline {
 
     parameters {
     
-        choice(name: 'Ansible', choices: ['Create_instances', 'Make_inventory', 'Invoke_playbook'], description: 'Pick any action')
+        choice(name: 'Ansible', choices: ['Create_instances', 'Make_inventory', 'Update_routes', 'Invoke_playbook'], description: 'Pick any action')
 
     }
 
@@ -12,11 +12,10 @@ pipeline {
             when { expression {params.Ansible == "Create_instances" } }
             steps {
                 sh "sh instances.sh launch"
-                sh "sleep 10s"
             }
         }
         stage ('Update Routes') {
-            when { expression {params.Ansible == "Create_instances" } }
+            when { expression {params.Ansible == "Update_routes" } }
             steps {
                 sh "sh instances.sh routes"
             }
