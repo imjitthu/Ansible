@@ -1,3 +1,8 @@
+- name: Installing NGINX Server
+  yum:
+    name: nginx
+    state: present
+
 - name: Delete content from /usr/share/nginx/html
   file:
     state: absent
