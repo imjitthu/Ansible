@@ -4,10 +4,11 @@
     tasks_from: os
 
 - name: Install Python modules 
-  yum: 
-    - python36 -
-    - gcc
-    - python3-devel
+  yum:
+    name: 
+      - python36 -
+      - gcc
+      - python3-devel
     state: present
 
 - name: User App user
@@ -26,9 +27,7 @@
     dest: /home/roboshop/{{COMPONENT}}
 
 - name: Install Python Packages
-  shell: |
-    cd /home/roboshop/{{COMPONENT}}
-    pip3 install -r requirements.txt
+  shell: pip3 install -r /home/roboshop/{{COMPONENT}}/requirements.txt
 
 # - name: Install Python Packages
 #   pip:
