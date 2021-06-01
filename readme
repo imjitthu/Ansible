@@ -1,1 +1,4 @@
 ansible-pull -i localhost, -U https://github.com/SrimaanPenugonda/Ansible.git roboshop-project/roboshop.yml -e ENV=Dev -e component=rabbitmq -t rabbitmq
+
+
+ln -s /usr/local/bin/aws /bin/aws
