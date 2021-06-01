@@ -9,22 +9,38 @@ pipeline {
 
     stages {
         stage ('Creating Instances') {
+            when {
+                params.Ansible == 'create_instances'
+
+            }
             steps {
                 sh "sh instances.sh launch"
                 sh "sleep 10s"
             }
         }
         stage ('Update Routes') {
+            when {
+                params.Ansible == 'create_instances'
+
+            }
             steps {
                 sh "sh instances.sh routes"
             }
         }
         stage ('Make Inventory') {
+            when {
+                params.Ansible == 'make_inventory'
+
+            }
             steps {
                 sh "sh mkinv.sh"
             }
         }
         stage ('Run Palybook') {
+            when {
+                params.Ansible == 'invoke_playbook'
+
+            }
             steps {
                 ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml'
             }
