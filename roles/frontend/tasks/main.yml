@@ -20,7 +20,7 @@
 
 - name: Copy the HTDOCS content and deploy under the Nginx path
   copy:
-    src: /*
+    src: files/
     dest: /usr/share/nginx/html
 
 - name: Setup /etc/nginx/default.d/roboshop.conf
