@@ -4,7 +4,11 @@
     tasks_from: os
 
 - name: Install Python modules 
-  shell: yum install python36 gcc python3-devel -y
+  yum: 
+    - python36 -
+    - gcc
+    - python3-devel
+    state: present
 
 - name: User App user
   user:
