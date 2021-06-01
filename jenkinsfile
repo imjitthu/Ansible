@@ -52,29 +52,30 @@ pipeline {
             }
             stage ('Installing Roboshop Components') {
                 parallel {
-                    stage ('Installing Cart Service') {
-                        steps {
-                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'cart'
-                        }
+                stage ('Installing Cart Service') {
+                    steps {
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'cart'
                     }
-                    stage ('Installing Catalogue Service') {
-                        steps {
-                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'catalogue'
-                        }
+                }
+                stage ('Installing Catalogue Service') {
+                    steps {
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'catalogue'
                     }
-                    stage ('Installing User Service') {
-                        steps {
-                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'user'
-                        }
+                }
+                stage ('Installing User Service') {
+                    steps {
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'user'
                     }
-                    stage ('Installing Shipping Service') {
-                        steps {
-                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'shipping'
-                        }
+                }
+                stage ('Installing Shipping Service') {
+                    steps {
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'shipping'
                     }
-                    stage ('Installing Payment Service') {
-                        steps {
-                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'payment'
+                }
+                stage ('Installing Payment Service') {
+                    steps {
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'payment'
+                            }
                         }
                     }
                 }
@@ -86,4 +87,3 @@ pipeline {
             }
         }
     }
-}
