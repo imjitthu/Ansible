@@ -11,6 +11,10 @@ pipeline {
         stage ('Creating Instances') {
             steps {
                 sh "sh instances.sh launch"
+            }
+        }
+        stage ('Update Routes') {
+            steps {
                 sh "sh instances.sh routes"
             }
         }
