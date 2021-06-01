@@ -29,7 +29,7 @@ pipeline {
      }
     stages {
         stage ('Run Palybook') {
-            //when { expression {params.Ansible == "Invoke_playbook" } }
+            when { expression {params.Ansible == "Invoke_playbook" } }
             parallel {
                 stage ('Installing MySQL') {
                     steps {
