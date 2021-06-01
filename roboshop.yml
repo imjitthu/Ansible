@@ -6,14 +6,6 @@
   # Become is nothing but a sudo in CLI, Also this become can be used in task level also
   tasks:
 
-    - name: Change Hostname
-      import_role:
-        name: common
-        tasks_from: os.yml
-      when: component == "mongo"
-      tags:
-        - mongo
-
     - name: Load MongoDB Role
       import_role:
         name: mongo
