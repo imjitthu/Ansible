@@ -7,5 +7,24 @@ pipeline {
 
     }
 
-    
+    stages {
+        stage ('Creating Instances') {
+            steps {
+                sh "sh instances.sh launch"
+                sh "sh instances.sh routes"
+            }
+        }
+        stage ('Make Inventory') {
+            steps {
+                sh "sh mkinv.sh"
+            }
+        }
+        stage ('Run Palybook') {
+            steps {
+                ansible-palybook -i /tmp/inv roboshop.yml 
+            }
+        }
+    }
+
+
 }
