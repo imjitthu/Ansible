@@ -27,7 +27,7 @@ pipeline {
             }
         }
         stage ('Run Palybook') {
-            //when { expression {params.Ansible == "Invoke_playbook" } }
+            when { expression {params.Ansible == "Invoke_playbook" } }
             parallel {
                 stage ('Installing MySQL') {
                     steps {
@@ -49,6 +49,7 @@ pipeline {
                     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
                     }
                 }
+              }
             }
             stage ('Installing Roboshop Components') {
                 parallel {
@@ -79,7 +80,6 @@ pipeline {
                         }
                     }
                 }
-            }
             stage ('Installing Web Components') {
                 steps {
                     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
