@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+
+    parameters {
+    
+        choice(name: 'Ansible', choices: ['create_instances', 'make_inventory', 'invoke_playbook'], description: 'Pick any action')
+
+    }
+
+    
+}
