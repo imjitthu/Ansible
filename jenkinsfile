@@ -26,7 +26,7 @@ pipeline {
                 sh "sh mkinv.sh"
             }
         }
-        stage ('Run Palybook') {
+        stage ('Installing DB & Cache Service') {
             when { expression {params.Ansible == "Invoke_playbook" } }
             parallel {
                 stage ('Installing MySQL') {
