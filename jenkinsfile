@@ -26,8 +26,6 @@ pipeline {
                 sh "sh mkinv.sh"
             }
         }
-     }
-    stages {
         stage ('Run Palybook') {
             when { expression {params.Ansible == "Invoke_playbook" } }
             parallel {
