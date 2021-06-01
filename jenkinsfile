@@ -29,7 +29,8 @@ pipeline {
         stage ('Run Palybook') {
             when { expression {params.Ansible == "Invoke_playbook" } }
             steps {
-                ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml'
+                ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
+                //ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml'
             }
         }
     }
