@@ -8,6 +8,8 @@
     name:
     - {{REDIS_REPO}}
     - redis
+    - epel-release 
+    - yum-utils
     state: latest
     enablerepo: remi
 
