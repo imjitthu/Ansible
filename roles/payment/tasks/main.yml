@@ -1,3 +1,11 @@
+- name: Installing required packages
+  yum:
+    name: 
+      - python36 
+      - gcc 
+      - python3-devel
+    state: latest
+    
 - name: User App user
   user:
     name: roboshop
