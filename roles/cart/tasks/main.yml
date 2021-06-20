@@ -1,3 +1,12 @@
+- name: Installing required packages
+  yum:
+    name: 
+      - nodejs
+      - make
+      - gcc-c++
+      - npm 
+    state: present
+
 - name: Create Application User
   user:
     name: roboshop
