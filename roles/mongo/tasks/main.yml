@@ -23,7 +23,12 @@
 
 - name: Copy catalogue.js {{COMPONENT}}
   copy:
-    src: files/
+    src: catalogue.js
+    dest: /tmp
+
+- name: Copy users.js {{COMPONENT}}
+  copy:
+    src: users.js
     dest: /tmp
 
 - name: Load {{COMPONENT}} schema

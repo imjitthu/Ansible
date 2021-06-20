@@ -1,30 +1,10 @@
-- name: Include Common Role for OS Prereqs
-  include_role:
-    name: common
-    tasks_from: os
-
-- name: Install Erlang is a dependency which is needed for RabbitMQ
-  yum: 
-    name: "{{Erlang}}"
-    state: present
-
-- name: Setup YUM repositories for RabbitMQ
-  shell: curl -s "{{RabbitMQ_Repository}}" | sudo bash
-
-- name: Install RabbitMQ
-  yum:
-    name: rabbitmq-server
-    state: present
+- name: Configuring App User in RabbitMQ
+  shell: |
+    rabbitmqctl add_user roboshop roboshop123; rabbitmqctl set_user_tags roboshop administrator; rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
 
 - name: Start RabbitMQ
   systemd:
     name: rabbitmq-server
     state: started
     enabled: yes
-    daemon-reload: yes
-
-- name: Create App User in RabbitMQ
-  shell: rabbitmqctl add_user roboshop roboshop123; rabbitmqctl set_user_tags roboshop administrator; rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
-
-
 

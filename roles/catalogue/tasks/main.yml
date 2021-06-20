@@ -1,17 +1,3 @@
-- name: Include Common Role for OS Prereqs
-  include_role:
-    name: common
-    tasks_from: os
-
-- name: Install NodeJS
-  yum:
-    name:
-      - nodejs
-      - make
-      - gcc-c++
-      - npm
-    state: present
-
 - name: Add App user
   user:
     name: roboshop

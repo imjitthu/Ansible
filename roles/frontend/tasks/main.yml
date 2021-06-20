@@ -1,13 +1,3 @@
-- name: Include Common Role for OS Prereqs
-  include_role:
-    name: common
-    tasks_from: os
-    
-- name: Installing NGINX Server
-  yum:
-    name: nginx
-    state: present
-
 - name: Delete content from /usr/share/nginx/html
   file:
     state: absent
@@ -22,6 +12,12 @@
   copy:
     src: static/
     dest: /usr/share/nginx/html
+
+# - name: Move Artifiact Files /usr/share/nginx/html/
+#   shell: |
+#     cd /usr/share/nginx/html
+#     mv static/* .
+#     rm -rf static
 
 #mv localhost.conf /etc/nginx/default.d/roboshop.conf
 
