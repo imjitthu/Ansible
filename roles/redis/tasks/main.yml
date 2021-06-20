@@ -5,7 +5,7 @@
 
 - name: Adding Repo files
   yum: 
-    name: {{REDIS_REPO}}
+    name: "{{REDIS_REPO}}"
     state: present
 
 - name: Installing Redis Server
