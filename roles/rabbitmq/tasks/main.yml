@@ -1,9 +1,24 @@
-- name: Configuring App User in RabbitMQ
-  shell: |
-    rabbitmqctl add_user roboshop roboshop123; rabbitmqctl set_user_tags roboshop administrator; rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+- name: Install required packages
+  yum: 
+    name: rabbitmq-server
+    state: latest
 
-- name: Start RabbitMQ
+- name: Installing erlang package
+  shell: |
+    yum install {{Erlang}} -y
+    curl -s {{RabbitMQ_Repository}} | sudo bash
+
+
+
+- name: Configuring Application User in RabbitMQ
+  shell: |
+    rabbitmqctl add_user roboshop roboshop123
+    rabbitmqctl set_user_tags roboshop administrator
+    rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+
+- name: Start RabbitMQ service
   systemd:
+    daemon_reload: yes
     name: rabbitmq-server
     state: started
     enabled: yes
