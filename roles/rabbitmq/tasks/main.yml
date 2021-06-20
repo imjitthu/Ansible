@@ -1,16 +1,17 @@
-- name: Install required packages
+- name: Installing erlang package
+  shell: |
+    yum install {{Erlang}} -y
+
+- name: Adding RabbitMQ Repo
+  shell: |
+    curl -s {{RabbitMQ_Repository}} | sudo bash
+
+- name: Installing RabbitMQ Server
   yum: 
     name: rabbitmq-server
     state: latest
 
-- name: Installing erlang package
-  shell: |
-    yum install {{Erlang}} -y
-    curl -s {{RabbitMQ_Repository}} | sudo bash
-
-
-
-- name: Configuring Application User in RabbitMQ
+- name: Adding RabbitMQ user for Application
   shell: |
     rabbitmqctl add_user roboshop roboshop123
     rabbitmqctl set_user_tags roboshop administrator
