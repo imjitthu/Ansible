@@ -1,3 +1,13 @@
+- name: Installing Redis Repo and Server
+  yum:
+    name:
+    - {{REDIS_REPO}}
+    - redis
+    state: latest
+    enablerepo: remi
+
+# yum install epel-release yum-utils -y &>>$LOG_FILE
+
 - name: Configuring redis.conf file
   replace:
     path: /etc/redis.conf
