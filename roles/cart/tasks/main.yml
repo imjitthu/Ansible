@@ -5,7 +5,7 @@
       - make
       - gcc-c++
       - npm 
-    state: present
+    state: latest
 
 - name: Create Application User
   user:
