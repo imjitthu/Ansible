@@ -3,10 +3,14 @@
     name: common
     tasks_from: os
 
-- name: Installing Redis Repo and Server
+- name: Adding Repo files
+  yum: 
+    name: {{REDIS_REPO}}
+    state: present
+
+- name: Installing Redis Server
   yum:
     name:
-    - {{REDIS_REPO}}
     - redis
     - epel-release 
     - yum-utils
