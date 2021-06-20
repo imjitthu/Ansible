@@ -1,14 +1,19 @@
-- name: Delete content from /usr/share/nginx/html
+- name: Installing NGiNX Server
+  yum:
+    name: Nginx
+    state: latest
+
+- name: Delete default NGiNX Content
   file:
     state: absent
     path: /usr/share/nginx/html
 
-- name: Create content from /usr/share/nginx/html
+- name: Create NGiNX Deirecory
   file:
     state: directory
     path: /usr/share/nginx/html
 
-- name: Copy the HTDOCS content and deploy under the Nginx path
+- name: Deploying WebApplication (frontend server)
   copy:
     src: static/
     dest: /usr/share/nginx/html
