@@ -5,7 +5,7 @@ if [ -z "$2" ]; then
   case $1 in
     launch)
       for component in frontend catalogue cart user shipping payment mysql mongo rabbitmq redis; do
-        echo "Launching $component Spot Instance"
+        echo "Launching $component Instance"
         aws ec2 run-instances  --launch-template LaunchTemplateId=lt-04d48af1efaa0fafc --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${component}}]" &>>/tmp/instatances-launch
       done
     ;;
@@ -23,7 +23,7 @@ else
   case $1 in
     launch)
       for component in $2; do
-        echo "Launching $component Spot Instance"
+        echo "Launching $component Instance"
         aws ec2 run-instances  --launch-template LaunchTemplateId=lt-04d48af1efaa0fafc --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${component}}]" &>>/tmp/instatances-launch
       done
     ;;
