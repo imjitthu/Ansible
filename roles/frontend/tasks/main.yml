@@ -5,7 +5,7 @@
    
 - name: Installing NGiNX Server
   yum:
-    name: Nginx
+    name: nginx
     state: latest
 
 - name: Delete default NGiNX Content
