@@ -10,6 +10,17 @@ terraform {
   }
 }
 
+#Centos-7-DevOps-Practice - ami-059e6ca6474628ef0
+
+data "aws_ami" "AMI" {
+    most_recent = true
+    owners = ["973714476881"]
+    filter {
+        name = "name"
+        values = ["Centos-7-DevOps-Practice"]
+    }
+}
+
 resource "aws_instance" "instance" {
   count   = length(var.COMPONENT)
   ami = "${data.aws_ami.AMI.id}"
